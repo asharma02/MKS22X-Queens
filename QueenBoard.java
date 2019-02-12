@@ -141,7 +141,13 @@ private boolean addQueen(int r, int c) {
   public void helper(int c) {
     int l = board.length ;
     if (c >= l) {
-      return numberQueens(board) == l; //if at end of board
+      int total = 0 ;
+      for (int r = 0 ; r < board.length ; r++) {
+        for (int c = 0 ; c < board.length ; c++) {
+          if (board[r][c] == -1) total++ ;
+        }
+      }
+      return total == l; //if at end of board
     }
     else {
       for (int r = 0 ; r < l ; r++) {
@@ -164,7 +170,24 @@ private boolean addQueen(int r, int c) {
   *@throws IllegalStateException when the board starts with any non-zero value
   */
   public int countSolutions(){
-
+    for (int r = 0 ; r < board.length ; r++) {
+        for (int c = 0 ; c < board.length ; c++) {
+            if (board[r][c] != 0) throw new IllegalStateException() ;
+        }
+    } //check if board is all 0s
+    return counthelper(0);
   }
 
+  public int counthelper(int col) {
+    if (col == board.length) {
+      return 1;
+    }// checks if the row last checked was the final row
+    int all = 0;
+    for (int r = 0 ; r < l ; r++) {//for every row in the column
+      if (addQueen(r,col)) {
+        all += counthelper(col + 1); //counter leads to the ocunter of the next column
+      }
+      removeQueen(r,col); //remove to TRY WITH THE NEXT QUEEN
+    }
+    return all;
 }
