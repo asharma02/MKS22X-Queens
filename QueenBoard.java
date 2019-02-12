@@ -88,7 +88,7 @@ private boolean addQueen(int r, int c) {
           }
           //adding safe diag right down
         }
-        return true ;
+        return true; //queen removed and safes added
       }
     }
 
@@ -108,7 +108,19 @@ private boolean addQueen(int r, int c) {
   */
 
   public String toString(){
-
+    String output = "" ;
+    for (int r = 0 ; r < board.length ; r++) {
+      for (int c = 0 ; c < board.length ; c++) {
+        if (board[r][c] == -1) { //queen
+          output += "Q " ;
+        }
+        else {
+          output += "_ " ;  //add board plus blank
+        }
+      }
+      ouptut += "\n" ;
+    }
+    return output;
   }
 
 
