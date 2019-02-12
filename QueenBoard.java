@@ -2,102 +2,89 @@ public class QueenBoard {
   private int[][]board;
 
 
-  public QueenBoard(int size){
-    board = new int[size][size] ;
-    for (int r = 0 ; r < size ; r++) {
-      for (int c = 0 ; c < size ; c++) {
-        board[r][c] = 0 ;
-      } //makes a square board filled with zeroes
+    public QueenBoard(int size){
+      board = new int[size][size] ;
+      for (int r = 0 ; r < size ; r++) {
+        for (int c = 0 ; c < size ; c++) {
+          board[r][c] = 0 ;
+        } //makes a square board filled with zeroes
+      }
     }
-  }
 
-  private void clearBoard() {
+    private void clearBoard() { //helper clears board
+          for(int r = 0; r < board.length; r++) {
+              for(int c = 0; c < board.length; c++) {
+                  board[r][c] = 0;
+              }
+          }
+      }
+
+    private boolean isEmpty() { //helper chekcs if empty
         for(int r = 0; r < board.length; r++) {
-            for(int c = 0; c < board.length; c++) {
-                board[r][c] = 0;
-            }
+          for(int c = 0; c < board.length; c++) {
+            if(board[r][c] != 0) return false;
+          }
         }
+        return true;
     }
 
-//add queen
-private boolean addQueen(int r, int c) {
-    if (board[r][c] != 0) {
-      return false;
-    } //TILE IS UNSAFE, CANT PUT QUEEN
-    for(int i = 0; i < board.length; i++) {
-      board[r][i] += 1;
-    }
-    for(int i = 0; i < board.length; i++) {
-      board[i][c] += 1;
-    }
-      //add unsafe to the row and column
-    for(int i = 0; r + i < board.length && c + i < board.length; i++) {
-      board[r + i][c + i] += 1;
-    }
-    for(int i = 0; r - i >= 0 && c - i >= 0; i++) {
-      board[r - i][c - i] += 1;
-    }
-    for(int i = 0; r + i < board.length && c - i >= 0; i++) {
-        board[r + i][c - i] += 1;
-    }
-    for(int i = 0; r - i >= 0 && c + i < board.length; i++) {
-        board[r - i][c + i] += 1;
-    }
-    //adding unsdafe diagonally all 4 ways
-    board[r][c] = -1; //changing the tile back to a queen
-}
-      if (r < board.length-1 && c < board.length-1) { // make sure r, c in bounds
-        int row = r + 1 ;
-        int col = c + 1 ;
-        while (row < board.length && col < board.length) {
-          board[row][col] += 1 ;
-          row++ ;//increment
-          col++ ;
-        }
-        //adding unsafe diag right down
+  //add queen
+  private boolean addQueen(int r, int c) {
+      if (board[r][c] != 0) {
+        return false;
+      } //TILE IS UNSAFE, CANT PUT QUEEN
+      for(int i = 0; i < board.length; i++) {
+        board[r][i] += 1;
       }
-      return true ; //queen and unsafes added
-    }
+      for(int i = 0; i < board.length; i++) {
+        board[i][c] += 1;
+      }
+        //add unsafe to the row and column
+      for(int i = 0; r + i < board.length && c + i < board.length; i++) {
+        board[r + i][c + i] += 1;
+      }
+      for(int i = 0; r - i >= 0 && c - i >= 0; i++) {
+        board[r - i][c - i] += 1;
+      }
+      for(int i = 0; r + i < board.length && c - i >= 0; i++) {
+          board[r + i][c - i] += 1;
+      }
+      for(int i = 0; r - i >= 0 && c + i < board.length; i++) {
+          board[r - i][c + i] += 1;
+      }
+      //adding unsdafe diagonally all 4 ways
+      board[r][c] = -1; //changing the tile back to a queen
+      return true;
   }
 
-  private boolean removeQueen(int r, int c) { //opposite of addqueen
-      if (board[r][c] != -1) { //tile is not a queen
+
+    private boolean removeQueen(int r, int c) { //opposite of addqueen
+      if (board[r][c] != -1) {
         return false;
+      } //no queen here
+      for(int i = 0; i < board.length; i++) {
+        board[r][i] -= 1;
       }
-      else {
-        for (int row = 0 ; row < board.length; row++) {
-          for (int col = 0 ; col < board.length; col++) {
-            if (row == r && col != c) {
-              board[row][col] -= 1;
-            }
-            if (col == c && row != r) {
-              board[row][col] -= 1;
-            }
-          }
-        } //add safe to the row and column
-        if (c < board.length-1 && r > 0) { //make sure r, c are in bounds
-          int row = r - 1;
-          int col = c + 1;
-          while (row >= 0 && col < board.length) {
-            board[row][col] -= 1 ;
-            col += 1 ; //increment
-            row -= 1 ;
-          }
-          //adding safe diag right up
-        }
-        if (r < board.length -1 && c < board.length -1) { // make sure r, c in bounds
-          int row = r + 1 ;
-          int col = c + 1 ;
-          while (row < board.length && col < board.length) {
-            board[row][col] -= 1 ;
-            row++ ;//increment
-            col++ ;
-          }
-          //adding safe diag right down
-        }
-        return true; //queen removed and safes added
+      for(int i = 0; i < board.length; i++) {
+        board[i][c] -= 1;
       }
-    }
+        //add safe to the row and column
+      for(int i = 0; r + i < board.length && c + i < board.length; i++) {
+        board[r + i][c + i] -= 1;
+      }
+      for(int i = 0; r - i >= 0 && c - i >= 0; i++) {
+        board[r - i][c - i] -= 1;
+      }
+      for(int i = 0; r + i < board.length && c - i >= 0; i++) {
+          board[r + i][c - i] -= 1;
+      }
+      for(int i = 0; r - i >= 0 && c + i < board.length; i++) {
+          board[r - i][c + i] -= 1;
+      }
+      //adding safe diagonally all 4 ways
+      board[r][c] = 0; //changing the tile back to UNSAFE
+      return true;
+  }
 
 
   /**
@@ -137,55 +124,57 @@ private boolean addQueen(int r, int c) {
   *@throws IllegalStateException when the board starts with any non-zero value
   */
   public boolean solve(){
-    for (int r = 0 ; r < board.length ; r++) {
-      for (int c = 0 ; c < board.length ; c++) {
-        if (board[r][c] != 0) throw new IllegalStateException() ;
-      }
-    } //check if board is good
-    return helper(0); //start at column 0
+    if(!isEmpty()) throw new IllegalStateException(); //check if empty
+    if(!helper(0, 0)) { //call the helper function; if doesnt work
+      clearBoard(); //clear
+      return false;//return false
+    }
+    return true; //return true otherwise
   }
 
-  public boolean helper(int c) {
+  public boolean helper(int r, int c) {
     int l = board.length ;
-    if (c >= l) {
-      int total = 0 ;
-      for (int rrow = 0 ; rrow < board.length ; rrow++) {
-        for (int ccol = 0 ; ccol < board.length ; ccol++) {
-          if (board[rrow][ccol] == -1) total++ ;
-        }
+    if(r == 0) {
+      addQueen(0, c);
+      if(!helper(1, 0)) { // if the this queen could not be added
+        removeQueen(r, c);
+        if(c == board.length - 1) {
+          return false;
+        } //once you reach the end of the board, no more solutions
+        return helper(0, c + 1); // try the next row
       }
-      return total == l; //if at end of board
+      else {
+        return true;
+      }
     }
-    else {
-      for (int r = 0 ; r < l ; r++) {
-        if (addQueen(r,c)) { //add queen and current index
-          if (helper(c+1) ) { //can continue
-            return true;
-          }
-          else {
-            removeQueen(r,c); //its wrong, remove try again
-          }
-        }
-     }
-     for (int row = 0 ; row < l ; row++) {
-        for (int col = 0 ; col < l ; col++) {
-          board[row][col] = 0 ;
-        }
+    if(addQueen(r, c)) { //if adding queen here
+      if(r == board.length - 1) {   //last row?
+        return true;
       }
-    return false; //cannot be solved
+      else {
+        if(!helper(r + 1, 0)) { //check rows, if no more solutions
+          removeQueen(r, c);
+          if(c == board.length - 1) {
+            return false;
+          }// if the last column, return false
+          return helper(r, c + 1); //try next column
+        }
+        return true; //return true because all bad solutions have been taken care of
+      }
+    }
+    if(c == board.length - 1) {
+      return false;
+    } //last column of row, return false
+    return helper(r, c + 1); // if queen could be placed, try next column
   }
-}
 
   /**
   *@return the number of solutions found, and leaves the board filled with only 0's
   *@throws IllegalStateException when the board starts with any non-zero value
   */
   public int countSolutions(){
-    for (int r = 0 ; r < board.length ; r++) {
-        for (int c = 0 ; c < board.length ; c++) {
-            if (board[r][c] != 0) throw new IllegalStateException() ;
-        }
-    } //check if board is all 0s
+    if(!isEmpty()) throw new IllegalStateException(); //check if empty
+    clearBoard(); //clear
     return counthelper(0);
   }
 
