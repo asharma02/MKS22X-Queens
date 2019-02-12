@@ -160,7 +160,11 @@ private boolean addQueen(int r, int c) {
           }
         }
      }
-     //maybe claer board back to 0s
+     for (int row = 0 ; row < l ; row++) {
+        for (int col = 0 ; col < l ; col++) {
+          board[row][col] = 0 ;
+        }
+      }
     return false; //cannot be solved
   }
 }
