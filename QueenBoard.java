@@ -19,8 +19,8 @@ private boolean addQueen(int r, int c) {
     else {
       board[r][c] = -1; //ADD THE QUEEN
 
-      for (int row = 0 ; row < l ; row++) {
-        for (int col = 0 ; col < l ; col++) {
+      for (int row = 0 ; row < board.length ; row++) {
+        for (int col = 0 ; col < board.length; col++) {
           if (row == r && col != c) {
             board[row][col] += 1;
           }
@@ -29,30 +29,68 @@ private boolean addQueen(int r, int c) {
           }
         }
       } //add unsafe to the row and column
-      if (c < l-1 && r > 0) { //make sure r, c are in bounds
+      if (c < board.length-1 && r > 0) { //make sure r, c are in bounds
         int row = r - 1;
         int col = c + 1;
-        while (row >= 0 && col < l) {
+        while (row >= 0 && col < board.length) {
           board[row][col] += 1 ;
           col += 1 ; //increment
           row -= 1 ;
         }
         //adding unsdafe diag right up
       }
-      if (r < l-1 && c < l-1) { // make sure r, c in bounds
+      if (r < board.length-1 && c < board.length-1) { // make sure r, c in bounds
         int row = r + 1 ;
         int col = c + 1 ;
-        while (row < l && col < l) {
+        while (row < board.length && col < board.length) {
           board[row][col] += 1 ;
           row++ ;//increment
           col++ ;
         }
         //adding unsafe diag right down
       }
-      return true ;
+      return true ; //queen and unsafes added
     }
   }
 
+  private boolean removeQueen(int r, int c) { //opposite of addqueen
+      if (board[r][c] != -1) { //tile is not a queen
+        return false;
+      }
+      else {
+        for (int row = 0 ; row < board.length; row++) {
+          for (int col = 0 ; col < board.length; col++) {
+            if (row == r && col != c) {
+              board[row][col] -= 1;
+            }
+            if (col == c && row != r) {
+              board[row][col] -= 1;
+            }
+          }
+        } //add safe to the row and column
+        if (c < board.length-1 && r > 0) { //make sure r, c are in bounds
+          int row = r - 1;
+          int col = c + 1;
+          while (row >= 0 && col < l) {
+            board[row][col] -= 1 ;
+            col += 1 ; //increment
+            row -= 1 ;
+          }
+          //adding safe diag right up
+        }
+        if (r < board.length -1 && c < board.length -1) { // make sure r, c in bounds
+          int row = r + 1 ;
+          int col = c + 1 ;
+          while (row < l && col < l) {
+            board[row][col] -= 1 ;
+            row++ ;//increment
+            col++ ;
+          }
+          //adding safe diag right down
+        }
+        return true ;
+      }
+    }
 
 
   /**
