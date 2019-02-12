@@ -132,12 +132,12 @@ public class QueenBoard {
     return true; //return true otherwise
   }
 
-  public boolean helper(int r, int c) {
+  public boolean helper(int r, int c) { //didn't use loop, probably less efficient but sitll pretty fast, i eliminated all wrong solutiosn
     int l = board.length ;
     if(r == 0) {
       addQueen(0, c);
-      if(!helper(1, 0)) { // if the this queen could not be added
-        removeQueen(r, c);
+      if(!helper(1, 0)) { // if going to the next row doesnt work
+        removeQueen(r, c); //remove it
         if(c == board.length - 1) {
           return false;
         } //once you reach the end of the board, no more solutions
@@ -164,7 +164,7 @@ public class QueenBoard {
     }
     if(c == board.length - 1) {
       return false;
-    } //last column of row, return false
+    } //last column of row, return false; double check
     return helper(r, c + 1); // if queen could be placed, try next column
   }
 
