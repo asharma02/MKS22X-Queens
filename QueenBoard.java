@@ -130,12 +130,35 @@ private boolean addQueen(int r, int c) {
   *@throws IllegalStateException when the board starts with any non-zero value
   */
   public boolean solve(){
-
+    for (int r = 0 ; r < board.length ; r++) {
+      for (int c = 0 ; c < board.length ; c++) {
+        if (board[r][c] != 0) throw new IllegalStateException() ;
+      }
+    } //check if board is good
+    return helper(0); //start at column 0
   }
 
-  public void helper(int r, int c, int target) {
-
+  public void helper(int c) {
+    int l = board.length ;
+    if (c >= l) {
+      return numberQueens(board) == l; //if at end of board
+    }
+    else {
+      for (int r = 0 ; r < l ; r++) {
+        if (addQueen(r,c)) { //add queen and current index
+          if (helper(c+1) ) { //can continue
+            return true;
+          }
+          else {
+            removeQueen(r,c); //its wrong, remove try again
+          }
+        }
+     }
+     //maybe claer board back to 0s
+    return false; //cannot be solved
   }
+}
+
   /**
   *@return the number of solutions found, and leaves the board filled with only 0's
   *@throws IllegalStateException when the board starts with any non-zero value
