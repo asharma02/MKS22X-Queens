@@ -11,34 +11,41 @@ public class QueenBoard {
     }
   }
 
+  private void clearBoard() {
+        for(int r = 0; r < board.length; r++) {
+            for(int c = 0; c < board.length; c++) {
+                board[r][c] = 0;
+            }
+        }
+    }
+
 //add queen
 private boolean addQueen(int r, int c) {
     if (board[r][c] != 0) {
       return false;
     } //TILE IS UNSAFE, CANT PUT QUEEN
-    else {
-      board[r][c] = -1; //ADD THE QUEEN
-
-      for (int row = 0 ; row < board.length ; row++) {
-        for (int col = 0 ; col < board.length; col++) {
-          if (row == r && col != c) {
-            board[row][col] += 1;
-          }
-          if (col == c && row != r) {
-            board[row][col] += 1;
-          }
-        }
-      } //add unsafe to the row and column
-      if (c < board.length-1 && r > 0) { //make sure r, c are in bounds
-        int row = r - 1;
-        int col = c + 1;
-        while (row >= 0 && col < board.length) {
-          board[row][col] += 1 ;
-          col += 1 ; //increment
-          row -= 1 ;
-        }
-        //adding unsdafe diag right up
-      }
+    for(int i = 0; i < board.length; i++) {
+      board[r][i] += 1;
+    }
+    for(int i = 0; i < board.length; i++) {
+      board[i][c] += 1;
+    }
+      //add unsafe to the row and column
+    for(int i = 0; r + i < board.length && c + i < board.length; i++) {
+      board[r + i][c + i] += 1;
+    }
+    for(int i = 0; r - i >= 0 && c - i >= 0; i++) {
+      board[r - i][c - i] += 1;
+    }
+    for(int i = 0; r + i < board.length && c - i >= 0; i++) {
+        board[r + i][c - i] += 1;
+    }
+    for(int i = 0; r - i >= 0 && c + i < board.length; i++) {
+        board[r - i][c + i] += 1;
+    }
+    //adding unsdafe diagonally all 4 ways
+    board[r][c] = -1; //changing the tile back to a queen
+}
       if (r < board.length-1 && c < board.length-1) { // make sure r, c in bounds
         int row = r + 1 ;
         int col = c + 1 ;
@@ -71,7 +78,7 @@ private boolean addQueen(int r, int c) {
         if (c < board.length-1 && r > 0) { //make sure r, c are in bounds
           int row = r - 1;
           int col = c + 1;
-          while (row >= 0 && col < l) {
+          while (row >= 0 && col < board.length) {
             board[row][col] -= 1 ;
             col += 1 ; //increment
             row -= 1 ;
@@ -81,7 +88,7 @@ private boolean addQueen(int r, int c) {
         if (r < board.length -1 && c < board.length -1) { // make sure r, c in bounds
           int row = r + 1 ;
           int col = c + 1 ;
-          while (row < l && col < l) {
+          while (row < board.length && col < board.length) {
             board[row][col] -= 1 ;
             row++ ;//increment
             col++ ;
@@ -118,7 +125,7 @@ private boolean addQueen(int r, int c) {
           output += "_ " ;  //add board plus blank
         }
       }
-      ouptut += "\n" ;
+      output += "\n" ;
     }
     return output;
   }
@@ -138,13 +145,13 @@ private boolean addQueen(int r, int c) {
     return helper(0); //start at column 0
   }
 
-  public void helper(int c) {
+  public boolean helper(int c) {
     int l = board.length ;
     if (c >= l) {
       int total = 0 ;
-      for (int r = 0 ; r < board.length ; r++) {
-        for (int c = 0 ; c < board.length ; c++) {
-          if (board[r][c] == -1) total++ ;
+      for (int rrow = 0 ; rrow < board.length ; rrow++) {
+        for (int ccol = 0 ; ccol < board.length ; ccol++) {
+          if (board[rrow][ccol] == -1) total++ ;
         }
       }
       return total == l; //if at end of board
@@ -187,11 +194,12 @@ private boolean addQueen(int r, int c) {
       return 1;
     }// checks if the row last checked was the final row
     int all = 0;
-    for (int r = 0 ; r < l ; r++) {//for every row in the column
+    for (int r = 0 ; r < board.length ; r++) {//for every row in the column
       if (addQueen(r,col)) {
         all += counthelper(col + 1); //counter leads to the ocunter of the next column
       }
       removeQueen(r,col); //remove to TRY WITH THE NEXT QUEEN
     }
     return all;
+}
 }
