@@ -7,9 +7,53 @@ public class QueenBoard {
     for (int r = 0 ; r < size ; r++) {
       for (int c = 0 ; c < size ; c++) {
         board[r][c] = 0 ;
-      }
+      } //makes a square board filled with zeroes
     }
   }
+
+//add queen
+private boolean addQueen(int r, int c) {
+    if (board[r][c] != 0) {
+      return false;
+    } //TILE IS UNSAFE, CANT PUT QUEEN
+    else {
+      board[r][c] = -1; //ADD THE QUEEN
+
+      for (int row = 0 ; row < l ; row++) {
+        for (int col = 0 ; col < l ; col++) {
+          if (row == r && col != c) {
+            board[row][col] += 1;
+          }
+          if (col == c && row != r) {
+            board[row][col] += 1;
+          }
+        }
+      } //add unsafe to the row and column
+      if (c < l-1 && r > 0) { //make sure r, c are in bounds
+        int row = r - 1;
+        int col = c + 1;
+        while (row >= 0 && col < l) {
+          board[row][col] += 1 ;
+          col += 1 ; //increment
+          row -= 1 ;
+        }
+        //adding unsdafe diag right up
+      }
+      if (r < l-1 && c < l-1) { // make sure r, c in bounds
+        int row = r + 1 ;
+        int col = c + 1 ;
+        while (row < l && col < l) {
+          board[row][col] += 1 ;
+          row++ ;//increment
+          col++ ;
+        }
+        //adding unsafe diag right down
+      }
+      return true ;
+    }
+  }
+
+
 
   /**
   *@return The output string formatted as follows:
@@ -29,21 +73,6 @@ public class QueenBoard {
 
   }
 
-  private boolean issafe(int row, int column){
-      for (int x = 0; x < rows; x++) {
-        if (board[x][column] == -1) {
-          return false;
-        }
-      }
-      for (int x = 0; x < columns; x++) {
-        if (board[row][x] == -1) {
-          return false;
-        }
-      }
-
-      return true
-
-  }
 
   /**
   *@return false when the board is not solveable and leaves the board filled with zeros;
@@ -51,24 +80,11 @@ public class QueenBoard {
   *@throws IllegalStateException when the board starts with any non-zero value
   */
   public boolean solve(){
-    int rows = board.length;
-    int columns = board[0].length;
-    return helper (0,0,rows);
 
   }
 
   public void helper(int r, int c, int target) {
-    int count = 0;
-    if (count == target) {
-      return true;
-    }
-    if {board[r][c] == 0 && board[r][c](r,c).issafe()) {
-          board[r][c] = -1;
-          count += 1;
-        }
-    }
-    return helper(r + 1, c, target, count);
-    return helper(r, c + 1, target, count);
+
   }
   /**
   *@return the number of solutions found, and leaves the board filled with only 0's
